@@ -1,0 +1,6 @@
+# Core dependencies
+pdfkit==1.0.0
+webbrowser==0.2.1
+
+# Optional (for better PDF generation)
+wkhtmltopdf==0.2

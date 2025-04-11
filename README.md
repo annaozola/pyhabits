@@ -16,4 +16,8 @@ A Python-based terminal app for quickly tracking your habits.
 - Python
 - pdfkit
 
+## Disclaimer
+
+This is NOT a portfolio project — just a small terminal app to solve a personal need for quickly tracking my habits.
+
 Created with code assistance from DeepSeek Chat AI.
