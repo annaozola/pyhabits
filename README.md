@@ -2,18 +2,18 @@
 
 # pyhabits
 
-Python-based terminal app for quickly tracking habits.
+A Python-based terminal app for quickly tracking your habits.
 
 ## Features
 
-- Daily habit tracking.
-- Daily, weekly, monthly habit preview in terminal.
-- Export weekly and monthly habits as JSON, CSV or Markdown files.
-- Export a habit in a yearly calendar visualization in HTML or PDF format (A4 size, ideal for print).
+- Track daily habits.
+- View daily, weekly, and monthly habit summaries directly in the terminal.
+- Export weekly and monthly habit data as JSON, CSV, or Markdown files.
+- Export a yearly view of a habit's data as an HTML or PDF calendar.
 
 ## Requirements
 
 - Python
-- Pdfkit
+- pdfkit
 
 Created with code assistance from DeepSeek Chat AI.
