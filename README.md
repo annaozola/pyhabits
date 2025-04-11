@@ -1,7 +1,5 @@
 ![pyhabits banner](assets/pyhabits-banner.png)
 
-<img src="assets/pyhabits-banner.png" alt="pyhabits banner" width="600" align="right">
-
 # pyhabits
 
 Python-based terminal app for quickly tracking habits.
