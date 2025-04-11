@@ -1,0 +1,13 @@
+# Ignore the user and exports folders
+user/
+exports/
+
+# Ignore Python cache and virtual environment files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+venv/
+env/
