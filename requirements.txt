@@ -1,6 +1,3 @@
-# Core dependencies
+# Python dependency for HTML → PDF (requires wkhtmltopdf installed on the system PATH).
+# Install wkhtmltopdf: https://wkhtmltopdf.org/downloads.html
 pdfkit==1.0.0
-webbrowser==0.2.1
-
-# Optional (for better PDF generation)
-wkhtmltopdf==0.2
