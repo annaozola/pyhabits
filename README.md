@@ -39,7 +39,8 @@ It takes **less than 30 seconds** to log your day.
 | **New habits** | Prompted **measurement** (e.g. “30 min”), **category**, and optional **icon** when you add a name that doesn’t exist yet. |
 | **Archive / retire** | **Archive** a habit to hide it from daily lists while **keeping all historical completions** (e.g. a finished project). **Unarchive** anytime. |
 | **Manage** | **Edit category/icon** for any habit; **list archived** habits. |
-| **Views** | **Today**: checklist for active habits. **Week**: **day-first** layout (each weekday lists habits you completed). **Month**: day-by-day checklist of active habits. |
+| **Views** | **Today**: checklist of all active habits with completion status. **Week**: each weekday shows all habits and whether you completed them. **Month**: day-by-day checklist of all active habits. |
+| **Statistics** | Per-habit **current streak**, **longest streak**, **completion rate**, and **total completions** — shown in a table sorted by category. Habits with icons display them inline. |
 | **Exports** | After **week** or **month** view, optional export to **JSON**, **CSV**, or **Markdown** (week Markdown matches the day-first layout). |
 | **Visualizations** | **HTML + PDF** yearly calendar grids (light, print-oriented styling). **All habits** → **one combined** document; or **one habit** only. You choose the **report year** (not only the current year). |
 
@@ -50,9 +51,10 @@ Tracking daily habits.
 ![Daily tracking](assets/screenshot-track.png)
 
 ## Requirements
-- **Python** - 3.8 or newer recommended.
-- **pdfkit**
-- **wkhtmltopdf** - Separate install, must be on your `PATH`. Without it, HTML still works; PDF will fail until wkhtmltopdf is installed.
+- **Python 3.8+**
+- **pyfiglet** — terminal logo rendering (installed via `requirements.txt`)
+- **WeasyPrint** — PDF export (installed via `requirements.txt`). On Windows, also requires the [GTK runtime](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html). Without it, HTML reports still work; only PDF export will fail.
+- **pdfkit + wkhtmltopdf** — optional legacy fallback if WeasyPrint cannot be installed.
 
 
 ## Installation
@@ -67,24 +69,14 @@ cd pyhabits
 ### 2. Python dependencies
 
 ```bash
-pip install pdfkit
-```
-
-If you use the bundled `requirements.txt`, install with:
-
-```bash
 pip install -r requirements.txt
 ```
 
-> `webbrowser` is part of the Python standard library — it should **not** be installed from PyPI. If `pip install -r requirements.txt` errors on `webbrowser`, remove that line from `requirements.txt` and run the command again.
+### 3. Install the GTK runtime (Windows only, for PDF export)
 
-### 4. Install wkhtmltopdf (for PDF)
+WeasyPrint requires the GTK runtime on Windows. Follow the instructions at [doc.courtbouillon.org](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html). Without it, HTML visualizations still work — only PDF export is affected.
 
-- **Windows:** run the installer from [wkhtmltopdf.org](https://wkhtmltopdf.org/downloads.html) and ensure the install directory is on your **PATH**.
-- **macOS:** e.g. `brew install wkhtmltopdf` (Homebrew).
-- **Linux:** use your distro package manager or the official package from the same site.
-
-### 5. Run
+### 4. Run
 
 ```bash
 python pyhabits.py

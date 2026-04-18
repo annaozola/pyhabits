@@ -1,6 +1,11 @@
-# Ignore the user and exports folders
+# Ignore the user and exports folders (private data — never commit)
 user/
+user-backup/
 exports/
+
+# Claude Code project instructions (private — not for GitHub)
+CLAUDE.md
+.claude/
 
 # Ignore Python cache and virtual environment files
 __pycache__/

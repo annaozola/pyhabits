@@ -1,0 +1,140 @@
+    :root {
+        --paper: #ffffff;
+        --surface: #f1f5f9;
+        --text: #0f172a;
+        --muted: #475569;
+        --rule: #1e3a5f;
+        --month-border: #94a3b8;
+        --day-border: #cbd5e1;
+        --day-empty-bg: #ffffff;
+        --done-fill: #166534;
+        --done-text: #ffffff;
+        --done-border: #14532d;
+    }
+    * { box-sizing: border-box; }
+    @page { size: A4 portrait; margin: 12mm 11mm; }
+    html {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        color-adjust: exact;
+    }
+    body {
+        font-family: "Source Sans 3", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: var(--paper);
+        color: var(--text);
+        line-height: 1.45;
+        font-size: 11pt;
+    }
+    .wrap {
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 0;
+    }
+    .doc-header {
+        border-bottom: 3px solid var(--rule);
+        padding-bottom: 12px;
+        margin-bottom: 24px;
+    }
+    .doc-header h1 {
+        font-family: "Fraunces", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+        font-weight: 600;
+        font-size: 22pt;
+        margin: 0 0 6px 0;
+        letter-spacing: -0.02em;
+        color: var(--text);
+    }
+    .doc-header .meta {
+        color: var(--muted);
+        font-size: 10pt;
+        margin: 0;
+    }
+    .habit-section {
+        margin-bottom: 28px;
+        page-break-before: always;
+        break-before: page;
+    }
+    .habit-section.first {
+        page-break-before: auto;
+        break-before: auto;
+    }
+    .habit-section h2 {
+        font-family: "Fraunces", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+        font-size: 14pt;
+        font-weight: 600;
+        margin: 0 0 8px 0;
+        padding-bottom: 6px;
+        border-bottom: 1px solid var(--day-border);
+        color: var(--rule);
+    }
+    .habit-section .sub {
+        color: var(--muted);
+        font-size: 9.5pt;
+        margin: 0 0 14px 0;
+    }
+    .year {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px 12px;
+        align-items: flex-start;
+    }
+    .month {
+        width: 212px;
+        background: var(--surface);
+        border: 1px solid var(--month-border);
+        border-radius: 2px;
+        padding: 10px 8px 8px;
+        break-inside: avoid;
+        page-break-inside: avoid;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    .month-name {
+        font-weight: 600;
+        text-align: center;
+        margin-bottom: 8px;
+        font-size: 9.5pt;
+        color: var(--text);
+        letter-spacing: 0.02em;
+    }
+    .calendar {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 2px;
+        border: 1px solid var(--day-border);
+        background: var(--day-border);
+    }
+    .day {
+        height: 28px;
+        min-width: 0;
+        text-align: center;
+        font-size: 9pt;
+        font-weight: 500;
+        line-height: 28px;
+        border: none;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    .day.completed {
+        background: var(--done-fill) !important;
+        color: var(--done-text) !important;
+        font-weight: 700;
+    }
+    .day.empty {
+        background: var(--day-empty-bg) !important;
+        color: var(--muted);
+    }
+    @media screen {
+        body {
+            padding: 24px 20px 40px;
+            background: #e2e8f0;
+        }
+        .wrap {
+            max-width: 900px;
+            background: var(--paper);
+            padding: 32px 36px;
+            box-shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
+            border: 1px solid var(--day-border);
+        }
+    }

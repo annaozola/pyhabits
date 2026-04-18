@@ -1,3 +1,14 @@
-# Python dependency for HTML → PDF (requires wkhtmltopdf installed on the system PATH).
-# Install wkhtmltopdf: https://wkhtmltopdf.org/downloads.html
-pdfkit==1.0.0
+# PDF generation — WeasyPrint preferred (pure Python; on Windows requires GTK runtime).
+# If WeasyPrint is unavailable, the app falls back to pdfkit (requires wkhtmltopdf binary).
+# Install WeasyPrint: https://doc.courtbouillon.org/weasyprint/stable/first_steps.html
+weasyprint>=60.0
+
+# Legacy fallback PDF backend (only needed if WeasyPrint is not usable)
+# pdfkit==1.0.0
+
+# Terminal logo rendering
+pyfiglet>=1.0
+
+# Development / testing
+pytest>=7.0
+pytest-cov
