@@ -33,11 +33,17 @@ class TestComputeCurrentStreak:
         assert compute_current_streak({today: True}) == 1
 
     def test_streak_broken_by_gap(self):
-        # yesterday and the day before — but NOT today
+        # yesterday and the day before are completed, but NOT today
         yesterday = (date.today() - timedelta(days=1)).isoformat()
         day_before = (date.today() - timedelta(days=2)).isoformat()
         completion = {yesterday: True, day_before: True}
-        # Streak is 0 because today is not completed
+        # Streak is 2 because yesterday is completed
+        assert compute_current_streak(completion) == 2
+
+    def test_streak_zero_if_yesterday_also_missed(self):
+        day_before_yesterday = (date.today() - timedelta(days=2)).isoformat()
+        completion = {day_before_yesterday: True}
+        # Streak is 0 because both today and yesterday are missed
         assert compute_current_streak(completion) == 0
 
     def test_consecutive_days_including_today(self):

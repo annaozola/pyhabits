@@ -153,12 +153,14 @@ def print_main_menu(*, show_header_art: bool = True, extra_items: list = None):
 
     menu_items = [
         ("1", "Track a habit"),
-        ("2", "View habits"),
-        ("3", "Generate visualization (HTML/PDF)"),
-        ("4", "Manage habits"),
-        ("5", "View statistics"),
-        ("6", "Undo last habit entry"),
-        ("7", "Exit"),
+        ("2", "Quick Daily Review"),
+        ("3", "View habits"),
+        ("4", "Generate visualization (HTML/PDF)"),
+        ("5", "Manage habits"),
+        ("6", "View statistics"),
+        ("7", "Undo last habit entry"),
+        ("8", "Sync with PyHabits Cloud"),
+        ("9", "Exit"),
     ]
     if extra_items:
         menu_items = menu_items + extra_items
@@ -221,6 +223,6 @@ def input_main_choice() -> str:
         + _s(_tc_fg(_BRAND_PRIMARY), "▸")
         + " "
         + _s(_Term.WHITE + _Term.BOLD, "Choose")
-        + _s(_tc_fg(_BRAND_MENU_ACCENT_RGB), " — type 1–7, then Enter: ")
+        + _s(_tc_fg(_BRAND_MENU_ACCENT_RGB), " — type 1–9, then Enter: ")
     )
     return input(prompt).strip()

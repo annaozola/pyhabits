@@ -28,6 +28,12 @@ def compute_current_streak(completion: dict) -> int:
     # Walk backwards; allow today to be absent (not yet logged today)
     truthy_set = set(truthy)
 
+    if cursor not in truthy_set:
+        yesterday = today - timedelta(days=1)
+        if yesterday not in truthy_set:
+            return 0
+        cursor = yesterday
+
     while cursor in truthy_set:
         streak += 1
         cursor -= timedelta(days=1)

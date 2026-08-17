@@ -10,6 +10,7 @@ from habits_core import (
     get_current_day,
     is_completed,
     parse_habit_pick,
+    parse_time_string,
     resolve_new_habit_flow,
     save_habits,
     suggest_close_habit_names,
@@ -128,21 +129,43 @@ def track_habit(habits):
     today_date = get_current_date()
     today_day = get_current_day()
 
-    if is_completed(habits[habit_name]["completion"].get(target_date, False)):
-        already_label = "today" if target_date == today_date else target_date
-        print(f"'{habit_name}' already tracked for {already_label}.")
-        return
-
-    # Prompt for a quantity if the habit has a measurement
     completion_value = True
+    existing_val = habits[habit_name]["completion"].get(target_date, False)
     measurement = habits[habit_name].get("measurement")
-    if measurement:
-        raw_qty = input(f"Log amount for '{measurement}' (or Enter to skip): ").strip()
-        if raw_qty:
-            try:
-                completion_value = float(raw_qty) if "." in raw_qty else int(raw_qty)
-            except ValueError:
-                print(f"'{raw_qty}' is not a number; logging as a simple check-in.")
+
+    if is_completed(existing_val):
+        already_label = "today" if target_date == today_date else target_date
+        if measurement and isinstance(existing_val, (int, float)):
+            raw_qty = input(f"'{habit_name}' already tracked for {already_label} with amount: {existing_val}. Enter new amount to overwrite (or press Enter to keep): ").strip()
+            if not raw_qty:
+                return
+            parsed = parse_time_string(raw_qty)
+            if parsed is not None:
+                completion_value = parsed
+            else:
+                print(f"'{raw_qty}' is not valid; keeping original.")
+                return
+        else:
+            ans = input(f"'{habit_name}' already tracked for {already_label}. Overwrite? [y/N]: ").strip().lower()
+            if ans != "y":
+                return
+            if measurement:
+                raw_qty = input(f"Log amount (unit: {measurement}, or Enter to skip): ").strip()
+                if raw_qty:
+                    parsed = parse_time_string(raw_qty)
+                    if parsed is not None:
+                        completion_value = parsed
+                    else:
+                        print(f"'{raw_qty}' is not valid; logging as a simple check-in.")
+    else:
+        if measurement:
+            raw_qty = input(f"Log amount (unit: {measurement}, or Enter to skip): ").strip()
+            if raw_qty:
+                parsed = parse_time_string(raw_qty)
+                if parsed is not None:
+                    completion_value = parsed
+                else:
+                    print(f"'{raw_qty}' is not valid; logging as a simple check-in.")
 
     habits[habit_name]["completion"][target_date] = completion_value
     date_label = today_day if target_date == today_date else target_date
@@ -214,3 +237,53 @@ def undo_habit(habits):
         print(f"Removed completion for '{habit_name}' on {removed_date}.")
     else:
         print(f"No completions found for '{habit_name}'.")
+
+
+def quick_daily_review(habits):
+    ordered = active_habits_ordered(habits)
+    if not ordered:
+        print("\n  No active habits to review.")
+        return
+
+    today_date = get_current_date()
+    today_day = get_current_day()
+
+    print_section_title(f"Quick Daily Review for {today_day}, {today_date}")
+    
+    any_tracked = False
+    for habit_name, data in ordered:
+        existing_val = data["completion"].get(today_date, False)
+        if is_completed(existing_val):
+            continue  # skip already tracked
+
+        measurement = data.get("measurement")
+        if measurement:
+            raw = input(f"Completed '{habit_name}'? (Enter amount for '{measurement}', 'y' for simple check-in, or Enter to skip): ").strip()
+            if not raw or raw.lower() == 'n':
+                continue
+            if raw.lower() == 'y':
+                completion_value = True
+            else:
+                parsed = parse_time_string(raw)
+                if parsed is not None:
+                    completion_value = parsed
+                else:
+                    print(f"  '{raw}' is not valid; logging as a simple check-in.")
+                    completion_value = True
+        else:
+            raw = input(f"Completed '{habit_name}'? [y/N]: ").strip().lower()
+            if raw != 'y':
+                continue
+            completion_value = True
+
+        data["completion"][today_date] = completion_value
+        qty_label = f" ({completion_value} {measurement})" if isinstance(completion_value, (int, float)) and measurement else ""
+        print(f"  -> Logged{qty_label}")
+        any_tracked = True
+
+    if any_tracked:
+        save_habits(habits)
+        print("\nReview complete! Habits saved.")
+    else:
+        print("\nReview complete! No new habits logged.")
+

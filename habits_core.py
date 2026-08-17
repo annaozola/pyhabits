@@ -1,4 +1,5 @@
 import json
+import re
 import csv
 import os
 import time
@@ -69,17 +70,24 @@ def normalize_habit_data(data):
 
 def load_habits():
     ensure_user_folder_exists()
-    if os.path.exists(HABIT_FILE):
-        with open(HABIT_FILE, "r", encoding="utf-8") as file:
-            raw = json.load(file)
-        return {k: normalize_habit_data(v) for k, v in raw.items()}
-    return {}
+    if not os.path.exists(HABIT_FILE):
+        return {}
+    try:
+        with open(HABIT_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            return {k: normalize_habit_data(v) for k, v in data.items()}
+    except Exception as e:
+        print(f"\n[!] Error loading {HABIT_FILE}: {e}")
+        return {}
 
 
 def save_habits(habits):
     ensure_user_folder_exists()
-    with open(HABIT_FILE, "w", encoding="utf-8") as file:
-        json.dump(habits, file, indent=4, ensure_ascii=False)
+    try:
+        with open(HABIT_FILE, "w", encoding="utf-8") as f:
+            json.dump(habits, f, indent=2, ensure_ascii=False)
+    except Exception as e:
+        print(f"\n[!] Error saving {HABIT_FILE}: {e}")
 
 
 def active_habits(habits):
@@ -235,3 +243,50 @@ def clean_old_exports(keep_days: int = 30) -> tuple:
                 pass
 
     return files_deleted, dirs_deleted
+
+
+def parse_time_string(raw: str):
+    """
+    Parse a time string into total minutes or a plain number.
+    Supports formats:
+    - "1h 30m", "1 h 30 m", "90m"
+    - "4:17"
+    - "1.5h"
+    - "90" (falls back to number parsing, returns int or float)
+    Returns int or float, or None if it cannot be parsed.
+    """
+    raw = raw.strip().lower()
+    if not raw:
+        return None
+
+    # Handle "H:MM" format
+    m_colon = re.match(r"^(\d+):(\d{1,2})$", raw)
+    if m_colon:
+        hours = int(m_colon.group(1))
+        mins = int(m_colon.group(2))
+        return hours * 60 + mins
+
+    total_mins = 0.0
+    found_time_part = False
+    
+    parts = re.findall(r"([\d\.]+)\s*([hm])", raw)
+    if parts:
+        for val_str, unit in parts:
+            try:
+                val = float(val_str)
+                if unit == "h":
+                    total_mins += val * 60
+                elif unit == "m":
+                    total_mins += val
+                found_time_part = True
+            except ValueError:
+                pass
+
+    if found_time_part:
+        return int(total_mins) if total_mins.is_integer() else total_mins
+
+    # Fallback to plain float/int
+    try:
+        return float(raw) if "." in raw else int(raw)
+    except ValueError:
+        return None

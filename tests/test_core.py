@@ -256,3 +256,27 @@ class TestFindActiveByCasefold:
 
     def test_nonexistent_returns_none(self, sample_habits):
         assert ph.find_active_by_casefold(sample_habits, "doesnotexist") is None
+
+
+class TestParseTimeString:
+    def test_colon_format(self):
+        assert ph.parse_time_string("1:30") == 90
+        assert ph.parse_time_string("0:45") == 45
+        assert ph.parse_time_string("4:17") == 257
+
+    def test_h_m_format(self):
+        assert ph.parse_time_string("1h 30m") == 90
+        assert ph.parse_time_string("1h30m") == 90
+        assert ph.parse_time_string("1 h 30 m") == 90
+        assert ph.parse_time_string("90m") == 90
+        assert ph.parse_time_string("2h") == 120
+        assert ph.parse_time_string("1.5h") == 90
+        assert ph.parse_time_string("0.5 h") == 30
+
+    def test_fallback_numbers(self):
+        assert ph.parse_time_string("45") == 45
+        assert ph.parse_time_string("45.5") == 45.5
+
+    def test_invalid_returns_none(self):
+        assert ph.parse_time_string("invalid") is None
+        assert ph.parse_time_string("") is None

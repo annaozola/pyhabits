@@ -37,9 +37,9 @@ class TestIdempotencyGuard:
 
         # Input: select habit by number "1" (Reading is first alphabetically by category)
         # The function should detect it's already tracked and print a message, not call save_habits
-        # "Reading" to select habit, then "1" for today's date
+        # "Reading" to select habit, then "1" for today's date, then "" to decline overwrite
         with patch("habits_tracking.save_habits") as mock_save, \
-             patch("builtins.input", side_effect=["Reading", "1"]), \
+             patch("builtins.input", side_effect=["Reading", "1", ""]), \
              patch("builtins.print"):
             ph.track_habit(habits)
             mock_save.assert_not_called()

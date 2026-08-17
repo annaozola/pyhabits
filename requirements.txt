@@ -12,3 +12,7 @@ pyfiglet>=1.0
 # Development / testing
 pytest>=7.0
 pytest-cov
+requests
+keyring
+
+python-dotenv

@@ -9,7 +9,7 @@ from ui_terminal import (
     print_view_habits_submenu,
     input_view_period_choice,
 )
-from habits_tracking import track_habit, track_habit_cli, undo_habit, undo_last_completion
+from habits_tracking import track_habit, track_habit_cli, undo_habit, undo_last_completion, quick_daily_review
 from habits_viewing import view_habits, view_stats, export_habits
 from habits_management import manage_habits
 from visualization import generate_visualization
@@ -130,6 +130,8 @@ def _run_interactive(habits):
         if choice == "1":
             track_habit(habits)
         elif choice == "2":
+            quick_daily_review(habits)
+        elif choice == "3":
             while True:
                 print_view_habits_submenu()
                 period_choice = input_view_period_choice()
@@ -143,15 +145,58 @@ def _run_interactive(habits):
                     break
                 else:
                     print("  Invalid choice. Please try again.")
-        elif choice == "3":
-            generate_visualization(habits)
         elif choice == "4":
-            manage_habits(habits)
+            generate_visualization(habits)
         elif choice == "5":
-            view_stats(habits)
+            manage_habits(habits)
         elif choice == "6":
-            undo_habit(habits)
+            view_stats(habits)
         elif choice == "7":
+            undo_habit(habits)
+        elif choice == "8":
+            from auth_service import auth
+            if not auth.is_authenticated():
+                print("\n  [!] Not signed in. Choose sign in method:")
+                print("      1. Google Sign-In (Browser)")
+                print("      2. Email/Password")
+                print("      3. Cancel")
+                method = input("    ▸ Choice (1-3): ").strip()
+                if method == "1":
+                    try:
+                        if auth.login_with_google():
+                            print("  [+] Google Login successful!")
+                        else:
+                            print("  [!] Login canceled or failed.")
+                            continue
+                    except Exception as e:
+                        print(f"  [!] Error: {e}")
+                        continue
+                elif method == "2":
+                    import getpass
+                    email = input("    Email: ").strip()
+                    password = getpass.getpass("    Password: ").strip()
+                    print("  [*] Authenticating...")
+                    try:
+                        auth.login_with_email(email, password)
+                        print("  [+] Login successful!")
+                    except Exception as e:
+                        print(f"  [!] Login failed: {e}")
+                        continue
+                else:
+                    continue
+            
+            print("\n  [*] Syncing with PyHabits Cloud...")
+            try:
+                from firestore_service import sync_with_firestore
+                from habits_core import save_habits
+                merged = sync_with_firestore(habits)
+                if merged:
+                    save_habits(habits)
+                print("  [+] Sync complete!")
+            except Exception as e:
+                print(f"  [!] Sync failed: {e}")
+                
+        elif choice == "9":
             print("Exiting pyhabits.")
             break
         else:
@@ -159,6 +204,11 @@ def _run_interactive(habits):
 
 
 def main():
+    from auth_service import auth
+
+    # Attempt to refresh silently in background, but don't block or prompt
+    auth.refresh_session()
+
     habits = load_habits()
 
     if len(sys.argv) > 1:
