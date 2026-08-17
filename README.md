@@ -84,9 +84,9 @@ python pyhabits.py
 ## Setting Up Cloud Sync
 By default, **pyhabits** stores your data locally on your machine. If you want to sync your habits across multiple devices, you have two, easy options to do so:
 
-**Option 1:** Sync the ```user``` folder with a cloud storage provider such as OneDrive, Google Drive, Dropbox, MEGA, or Nextcloud.
+**Option 1:** Sync the ```user``` folder with a **cloud storage provider** such as OneDrive, Google Drive, Dropbox, MEGA, or Nextcloud.
 
-**Option 2:** Sync with your own Firebase project.
+**Option 2:** Sync with your own **Firebase** project.
 
 ### How to Setup Cloud Sync with Firebase
 The following steps assume that you have already cloned the repository and installed the required packages.
@@ -94,25 +94,19 @@ The following steps assume that you have already cloned the repository and insta
 The steps may change after a certain time has passed and Firebase has been updated.
 
 #### 1. Create a Firebase project
-1.1. Go to [Firebase Console](https://console.firebase.google.com/) and click **Add Project**.
-
-1.2. Give it a name (e.g., ```my-pyhabits-sync```) and create the project.
+- Go to [Firebase Console](https://console.firebase.google.com/) and click **Add Project**.
+- Give it a name (e.g., ```my-pyhabits-sync```) and create the project.
 
 #### 2. Enable authentication
-2.1. On the left sidebar, navigate to **Build > Authentication** and click **Get Started**.
-
-2.2. Navigate to the **Sign-in method** tab.
-
-2.3. Enable **Email/Password**.
-
-2.4. Enable **Google** (this allows the browser-based Google sign-in to work).
+- On the left sidebar, navigate to **Build > Authentication** and click **Get Started**.
+- Navigate to the **Sign-in method** tab.
+- Enable **Email/Password**.
+- Enable **Google** (this allows the browser-based Google sign-in to work).
 
 #### 3. Enable the database
-3.1. On the left sidebar, navigate to **Build > Firestore Database** and click **Create Database**.
-
-3.2. Choose a location and start in **Production Mode**.
-
-3.3. Navigate to the **Rules** tab and paste this exact code to ensure *only you* can access your data:
+- On the left sidebar, navigate to **Build > Firestore Database** and click **Create Database**.
+- Choose a location and start in **Production Mode**.
+- Navigate to the **Rules** tab and paste this exact code to ensure *only you* can access your data:
 
 ```javascript
 rules_version = '2';
@@ -127,11 +121,9 @@ service cloud.firestore {
 3.4. Click **Publish**.
 
 #### 4. Connect the terminal app
-4.1. In your Firebase Console, click the **Gear Icon** (Project Settings) at the top left.
-
-4.2. In the ```pyhabits``` folder on your computer, rename the ```.env.example``` file to ```.env```
-
-4.3. Open the ```.env``` file and paste in your Project ID and Web API Key (found in your Firebase Project Settings):
+- In your Firebase Console, click the **Gear Icon** (Project Settings) at the top left.
+- In the ```pyhabits``` folder on your computer, rename the ```.env.example``` file to ```.env```
+- Open the ```.env``` file and paste in your Project ID and Web API Key (found in your Firebase Project Settings):
 
 ```env
 FIREBASE_API_KEY=your_web_api_key_here
