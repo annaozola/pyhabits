@@ -20,11 +20,10 @@ It takes **less than 30 seconds** to log your day.
 - [Screenshots](#screenshots)
 - [Requirements](#requirements)
 - [Installation](#installation)
-- [Setting up cloud sync](#setting--up--cloud--sync)
+- [Setting up cloud sync](#setting-up-cloud-sync)
 - [Data & file layout](#data--file-layout)
 - [Privacy & GitHub](#privacy--github)
-- [Credits & tooling](#credits--tooling)
-- [License](#license)
+- [Disclaimer](#disclaimer)
 
 ## What It Does
 
@@ -32,7 +31,7 @@ It takes **less than 30 seconds** to log your day.
 
 ## Features
 
-| Area | What you get |
+| Feature | Description |
 |------|----------------|
 | **Tracking** | Mark habits **completed for today**; habits grouped by **category** with optional **emoji icons**; pick by **number** or type the name. |
 | **Smart naming** | **Case-insensitive** match and **fuzzy suggestions** (typos) before accidentally creating a duplicate habit. |
@@ -43,6 +42,7 @@ It takes **less than 30 seconds** to log your day.
 | **Statistics** | Per-habit **current streak**, **longest streak**, **completion rate**, and **total completions** — shown in a table sorted by category. Habits with icons display them inline. |
 | **Exports** | After **week** or **month** view, optional export to **JSON**, **CSV**, or **Markdown** (week Markdown matches the day-first layout). |
 | **Visualizations** | **HTML + PDF** yearly calendar grids (light, print-oriented styling). **All habits** → **one combined** document; or **one habit** only. You choose the **report year** (not only the current year). |
+| **Cloud Sync (optional)** | Optional sync with your own Firebase project. Google Sign-In integrated directly into the terminal. |
 
 ## Screenshots
 
@@ -84,7 +84,7 @@ python pyhabits.py
 ## Setting Up Cloud Sync
 By default, **pyhabits** stores your data locally on your machine. If you want to sync your habits across multiple devices, you have two, easy options to do so:
 
-**Option 1:** Sync the ```user``` folder with a **cloud storage provider** such as OneDrive, Google Drive, Dropbox, MEGA, or Nextcloud.
+**Option 1:** Sync the `user` folder with a **cloud storage provider** such as OneDrive, Google Drive, Dropbox, MEGA, or Nextcloud.
 
 **Option 2:** Sync with your own **Firebase** project.
 
@@ -95,7 +95,7 @@ The steps may change after a certain time has passed and Firebase has been updat
 
 #### 1. Create a Firebase project
 - Go to [Firebase Console](https://console.firebase.google.com/) and click **Add Project**.
-- Give it a name (e.g., ```my-pyhabits-sync```) and create the project.
+- Give it a name (e.g., `my-pyhabits-sync`) and create the project.
 
 #### 2. Enable authentication
 - On the left sidebar, navigate to **Build > Authentication** and click **Get Started**.
@@ -118,19 +118,19 @@ service cloud.firestore {
   }
 }
 ```
-3.4. Click **Publish**.
+- Click **Publish**.
 
 #### 4. Connect the terminal app
 - In your Firebase Console, click the **Gear Icon** (Project Settings) at the top left.
-- In the ```pyhabits``` folder on your computer, rename the ```.env.example``` file to ```.env```
-- Open the ```.env``` file and paste in your Project ID and Web API Key (found in your Firebase Project Settings):
+- In the `pyhabits` folder on your computer, rename the `.env.example` file to `.env`
+- Open the `.env` file and paste in your Project ID and Web API Key (found in your Firebase Project Settings):
 
 ```env
 FIREBASE_API_KEY=your_web_api_key_here
 FIREBASE_PROJECT_ID=your_project_id_here
 ```
 #### 5. Start syncing
-Run the terminal app and press ```8``` to start syncing with your Firebase project.
+Run the terminal app and press `8` to start syncing with your Firebase project.
 
 ## Data & File Layout
 
@@ -164,7 +164,7 @@ You can **back up** `user/habits.json` or use **JSON export** from the app for a
 ## Privacy & GitHub
 
 - `user/` and `exports/` are listed in **`.gitignore`** so habit data and generated files are **not** committed by default.
-- Before every push: `git status` — confirm you are not force-adding `user/` or `exports/`.
+- Before every push: `git status` — confirm you are not force-adding `user/`, `exports/` or `.env`.
 - Everyone who clones the repo gets **their own** local `user/` folder when they run the app.
 
 ## Disclaimer
